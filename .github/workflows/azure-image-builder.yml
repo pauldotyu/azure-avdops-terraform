@@ -18,7 +18,7 @@ jobs:
       uses: azure/build-vm-image@v0
       with:        
         resource-group-name: 'rg-ycc-aib'
-        managed-identity: 'ycc-aib'
+        managed-identity: 'ycc-aib' # if the managed identity is in your resource group, you can simply reference it by name; otherwise you'll need to include the id of the object
         location: 'westus2'
         source-os-type: 'Windows'
         source-image-type: 'PlatformImage'
@@ -26,3 +26,6 @@ jobs:
         dist-type: 'SharedImageGallery'
         dist-resource-id: '/subscriptions/3f9582cc-bcd7-4c17-9063-ab38965e3914/resourceGroups/rg-ycc-aib/providers/Microsoft.Compute/galleries/sigycc/images/ycc-wvd-image'
         dist-location: 'westus2,centralus'
+        customizer-script: |
+          & 'c:\workflow-artifacts\install-scripts\base-installs.ps1'
+        customizer-windows-update: true

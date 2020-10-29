@@ -6,21 +6,19 @@ provider "azurerm" {
 data "azurerm_subscription" "current" {
 }
 
-
 resource "azurerm_resource_group" "aib" {
-  name     = "rg-ycc-aib"
-  location = "West US 2"
-  
+  name     = var.rg_name
+  location = var.rg_location
+
   tags = {
-    Hello = "There"
-    World = "Example"
+    environment = "dev"
   }
 }
 
 resource "azurerm_role_definition" "aib" {
-  name        = "YCC-Image-Creator"
+  name        = var.role_def_name
   scope       = data.azurerm_subscription.current.id
-  description = "Azure Image Builder access to create resources for the image build"
+  description = var.role_def_description
 
   permissions {
     actions = [
@@ -36,6 +34,7 @@ resource "azurerm_role_definition" "aib" {
   }
 
   assignable_scopes = [
+    data.azurerm_subscription.current.id,
     azurerm_resource_group.aib.id
   ]
 }
@@ -44,27 +43,27 @@ resource "azurerm_role_definition" "aib" {
 resource "azurerm_role_assignment" "aib" {
   scope              = azurerm_resource_group.aib.id
   role_definition_id = azurerm_role_definition.aib.role_definition_resource_id
-  principal_id       = "46cdaef3-d9cd-44e3-b3d5-1b30287bb665"
+  principal_id       = var.role_assignment_principal_id
 }
 
 resource "azurerm_shared_image_gallery" "aib" {
-  name                = "sigycc"
+  name                = var.sig_name
   resource_group_name = azurerm_resource_group.aib.name
   location            = azurerm_resource_group.aib.location
-  description         = "Shared images and things."
+  description         = var.sig_description
 }
 
 resource "azurerm_shared_image" "aib" {
-  name                = "ycc-wvd-image"
+  name                = var.sig_image_name
   gallery_name        = azurerm_shared_image_gallery.aib.name
   resource_group_name = azurerm_resource_group.aib.name
   location            = azurerm_resource_group.aib.location
   os_type             = "Windows"
 
   identifier {
-    publisher = "FakePublisherName"
-    offer     = "FakeOfferName"
-    sku       = "Fakeku"
+    publisher = var.sig_publisher
+    offer     = var.sig_offer
+    sku       = var.sig_sku
   }
 }
 
