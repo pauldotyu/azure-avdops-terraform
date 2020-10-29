@@ -4,7 +4,7 @@ on: push
 
 jobs:
   BUILD-CUSTOM-IMAGE:
-    runs-on: ubuntu-latest    
+    runs-on: windows-latest 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -22,7 +22,7 @@ jobs:
         location: 'westus2'
         source-os-type: 'Windows'
         source-image-type: 'PlatformImage'
-        source-image: microsoftwindowsdesktop:office-365:20h1-evd-o365pp:latest
+        source-image: MicrosoftWindowsDesktop:office-365:20h1-evd-o365pp:latest
         dist-type: 'SharedImageGallery'
         dist-resource-id: '/subscriptions/3f9582cc-bcd7-4c17-9063-ab38965e3914/resourceGroups/rg-ycc-aib/providers/Microsoft.Compute/galleries/sigycc/images/ycc-wvd-image'
         dist-location: 'westus2'
