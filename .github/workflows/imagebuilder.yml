@@ -18,7 +18,7 @@ jobs:
       uses: azure/build-vm-image@v0
       with:        
         resource-group-name: 'rg-ycc-aib'
-        managed-identity: '/subscriptions/3f9582cc-bcd7-4c17-9063-ab38965e3914/resourcegroups/rg-ycc-aib/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ycc-aib'
+        managed-identity: 'ycc-aib'
         location: 'westus2'
         source-os-type: 'windows'
         source-image: microsoftwindowsdesktop:office-365:20h1-evd-o365pp:latest
