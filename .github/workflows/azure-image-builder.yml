@@ -15,7 +15,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
 
     - name: Echo workspace
-
+      run: echo ${{ GITHUB.WORKSPACE }}
+      
     - name: Build custom VM image
       uses: azure/build-vm-image@v0
       with:        
