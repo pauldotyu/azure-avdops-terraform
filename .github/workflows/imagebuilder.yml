@@ -17,12 +17,12 @@ jobs:
     - name: Build custom VM image
       uses: azure/build-vm-image@v0
       with:        
-        resource-group-name: 'rg-ycc-aib'
-        managed-identity: 'ycc-aib'
-        location: 'westus2'
+        resource-group-name: 'py-aib-rg'
+        managed-identity: 'pyaibmid'
+        location: 'westus'
         source-os-type: 'Windows'
         source-image-type: 'PlatformImage'
         source-image: microsoftwindowsdesktop:office-365:20h1-evd-o365pp
         dist-type: 'SharedImageGallery'
-        dist-resource-id: '/subscriptions/3f9582cc-bcd7-4c17-9063-ab38965e3914/resourceGroups/rg-ycc-aib/providers/Microsoft.Compute/galleries/sigycc/images/ycc-wvd-image'
-        dist-location: 'westus2'
+        dist-resource-id: '/subscriptions/3f9582cc-bcd7-4c17-9063-ab38965e3914/resourceGroups/py-aib-rg/providers/Microsoft.Compute/galleries/pycoresig01/images/19h2-evd-o365pp'
+        dist-location: 'westus'
