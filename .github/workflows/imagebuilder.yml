@@ -1,0 +1,30 @@
+name: create_custom_windows_image
+
+on: push
+
+jobs:
+  BUILD-CUSTOM-IMAGE:
+    runs-on: ubuntu-latest    
+    steps:
+    - name: CHECKOUT
+      uses: actions/checkout@v2
+
+    - name: AZURE LOGIN 
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+
+    - name: BUILD-CUSTOM-VM-IMAGE      
+      uses: azure/build-vm-image@v0
+      with:        
+        resource-group-name: 'rg-ycc-aib'
+        managed-identity: '/subscriptions/3f9582cc-bcd7-4c17-9063-ab38965e3914/resourcegroups/rg-ycc-aib/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ycc-aib'
+        location: 'westus2'
+        source-os-type: 'windows'
+        source-image: microsoftwindowsdesktop:office-365:20h1-evd-o365pp:latest
+        distributor-type: 'SharedImageGallery'
+        dist-resource-id: '/subscriptions/3f9582cc-bcd7-4c17-9063-ab38965e3914/resourceGroups/rg-ycc-aib/providers/Microsoft.Compute/galleries/sigycc/images/ycc-wvd-image'
+        dist-location: 'centralus'
+        build-timeout-in-minutes: 240
+        vm-size: 'Standard_DS4_v2'
+        customizer-windows-update: true
