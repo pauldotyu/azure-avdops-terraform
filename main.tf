@@ -67,21 +67,6 @@ resource "azurerm_shared_image" "aib" {
   }
 }
 
-# resource "azurerm_shared_image_version" "aib" {
-#   name                = "0.0.1"
-#   gallery_name        = azurerm_shared_image.aib.gallery_name
-#   image_name          = azurerm_shared_image.aib.name
-#   resource_group_name = azurerm_shared_image.aib.resource_group_name
-#   location            = azurerm_shared_image.aib.location
-#   managed_image_id    = azurerm_shared_image.aib.id
-
-#   target_region {
-#     name                   = "Central US"
-#     regional_replica_count = 1
-#     storage_account_type   = "Standard_LRS"
-#   }
-# }
-
 output "role_definition_id" {
   value = azurerm_role_definition.aib.id
 }
