@@ -4,7 +4,7 @@ on: push
 
 jobs:
   azure-image-builder:
-    runs-on: windows-latest 
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -13,6 +13,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
+
+    - name: Echo workspace
 
     - name: Build custom VM image
       uses: azure/build-vm-image@v0
@@ -27,5 +29,5 @@ jobs:
         dist-resource-id: '/subscriptions/3f9582cc-bcd7-4c17-9063-ab38965e3914/resourceGroups/rg-ycc-aib/providers/Microsoft.Compute/galleries/sigycc/images/ycc-wvd-image'
         dist-location: 'westus2,centralus'
         customizer-script: |
-          & 'c:\workflow-artifacts\install-scripts\base-installs.ps1'
+          & 'c:\workflow-artifacts\base-installs.ps1'
         customizer-windows-update: true
