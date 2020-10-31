@@ -1,3 +1,5 @@
+![create_custom_windows_image](https://github.com/pauldotyu/azure-wvd/workflows/create_custom_windows_image/badge.svg)
+
 # Overview
 
 This repo will walk you through setting up the Azure infrastructure necessary to build custom images using Azure Image Builder and push to a Shared Image Gallery. You will need to have [Terraform](https://www.terraform.io/downloads.html) either locally on your machine or you can clone this repo in your [Azure Cloud Shell](https://shell.azure.com) which already has Terraform installed.
