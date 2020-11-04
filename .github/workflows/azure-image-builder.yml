@@ -1,6 +1,9 @@
 name: create_custom_windows_image
 
-on: push
+on: 
+  push:
+    paths:
+    - 'workflow-artifacts/**'
 
 jobs:
   azure-image-builder:

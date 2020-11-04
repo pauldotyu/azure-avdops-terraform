@@ -12,14 +12,6 @@ This repo will walk you through setting up the Azure infrastructure necessary to
 
     - https://github.com/Azure/build-vm-image
 
-1. Create a user-assigned managed identity
-
-    ```sh
-    az identity create -g <RESOURCE GROUP> -n <USER ASSIGNED IDENTITY NAME>
-    ```
-
-    > Keep the `principalId` value handy as you will need this for your custom role assignment
-
 1. Make sure you have a service principal with the proper permissions in your subscription
 
     ```sh
@@ -30,15 +22,13 @@ This repo will walk you through setting up the Azure infrastructure necessary to
 
     > Copy the contents to your clipboard
 
-1. In your GitHub repo, head over to Settings and create a new Secret named `AZURE_CREDENTIALS` and paste in the content
+1. In your GitHub repo, head over to Settings and create a new Secret named `AZURE_CREDENTIALS` and paste in the content from the step above
 
 1. Build your infrastructure using `terraform apply` from the root of this repo. 
 
-    > There is a `variables.tf` file in the root directory which contain default values for variables. You should overwrite the defaults with your own values by providing a file that ends with the name `*.auto.tfvars`
+    > There is a `variables.tf` file in the root directory which contain default values for variables. You should overwrite the defaults with your own values by providing a file that ends with the name `*.auto.tfvars` or if you are running Terraform Cloud in a remote workspace, you can add variables which effectively act as your remote `*.auto.tfvars` file
 
-    > You will need to include your `principalId` for the role assignment for your user assigned managed identity which you created in the step above
-
-1. Add a new GitHub Action and paste in the following for a basic Windows 10 multi-session image build
+1. Add a new GitHub Action and paste in the following for a basic Windows 10 multi-session image build. See the .github/workflows directory in this repo for customizing your build.
 
     ```yml
     name: create_custom_windows_image
