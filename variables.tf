@@ -1,64 +1,54 @@
 variable "rg_name" {
   type        = string
-  description = "(optional) describe your variable"
-  default     = "rg-ycc-aib"
+  description = "Resource group name for Shared Image Gallery"
 }
 
 variable "rg_location" {
   type        = string
-  description = "(optional) describe your variable"
-  default     = "West US 2"
+  description = "Resource group location. Make sure you are deploying in a location where Azure Image Builder is supported"
 }
 
 variable "role_def_name" {
   type        = string
-  description = "(optional) describe your variable"
-  default     = "YCC-Image-Creator"
+  description = "Role definition name"
 }
 
 variable "role_def_description" {
   type        = string
-  description = "(optional) describe your variable"
-  default     = "Azure Image Builder access to create resources for the image build"
+  description = "Role defintion description"
 }
 
 variable "role_assignment_principal_id" {
   type        = string
-  description = "(optional) describe your variable"
+  description = "User assigned managed identity ID"
 }
 
 variable "sig_name" {
   type        = string
-  description = "(optional) describe your variable"
-  default     = "sigycc"
+  description = "Shared Image Gallery name"
 }
 
 variable "sig_description" {
   type        = string
-  description = "(optional) describe your variable"
-  default     = "Shared images and things."
+  description = "Shared Image Gallery description"
 }
 
 variable "sig_image_name" {
   type        = string
-  description = "(optional) describe your variable"
-  default     = "ycc-wvd-image"
+  description = "Image name"
 }
 
 variable "sig_publisher" {
   type        = string
-  description = "(optional) describe your variable"
-  default     = "FakePublisherName"
+  description = "Image publisher"
 }
 
 variable "sig_offer" {
   type        = string
-  description = "(optional) describe your variable"
-  default     = "FakeOfferName"
+  description = "Image offer"
 }
 
 variable "sig_sku" {
   type        = string
-  description = "(optional) describe your variable"
-  default     = "Fakeku"
+  description = "Image SKU"
 }
