@@ -52,12 +52,12 @@ Write-Host "Start 10 second sleep"
 Start-Sleep -Seconds 10
 
 Write-Host "Installing Teams"
-Start-Process msiexec.exe -Wait -ArgumentList '/I c:\temp\Teams.msi /quiet /l*v c:\temp\teamsinstall.log ALLUSER=1'
+Start-Process msiexec.exe -Wait -ArgumentList '/I c:\temp\Teams.msi /quiet /l*v c:\temp\teamsinstall.log ALLUSER=1 ALLUSERS=1'
 Write-Host "Start 10 second sleep"
 Start-Sleep -Seconds 30
-New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run -Name Teams -PropertyType Binary -Value ([byte[]](0x01,0x00,0x00,0x00,0x1a,0x19,0xc3,0xb9,0x62,0x69,0xd5,0x01)) -Force
-Write-Host "Start 10 second sleep"
-Start-Sleep -Seconds 10
+# New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run -Name Teams -PropertyType Binary -Value ([byte[]](0x01,0x00,0x00,0x00,0x1a,0x19,0xc3,0xb9,0x62,0x69,0xd5,0x01)) -Force
+# Write-Host "Start 10 second sleep"
+# Start-Sleep -Seconds 10
 
 #########################################################################################
 # Download and install Edge Chromium

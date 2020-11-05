@@ -78,81 +78,8 @@ resource "azurerm_shared_image" "aib" {
 }
 
 ##############################################
-# WINDOWS VIRTUAL DESKTOP 
-##############################################
-
-resource "azurerm_resource_group" "wvd" {
-  name     = var.rg_wvd_name
-  location = var.rg_wvd_location
-
-  tags = {
-    environment = "dev"
-  }
-}
-
-resource "azurerm_virtual_desktop_host_pool" "wvd" {
-  name                 = var.hp_name
-  resource_group_name  = azurerm_resource_group.wvd.name
-  location             = azurerm_resource_group.wvd.location
-  type                 = "Pooled"
-  load_balancer_type   = "BreadthFirst"
-  friendly_name        = var.hp_friendly_name
-  description          = var.hp_description
-  validate_environment = false
-
-  registration_info {
-    expiration_date = timeadd(timestamp(), "200m")
-  }
-}
-
-# resource "azurerm_virtual_desktop_application_group" "rag" {
-#   name                = "rag-contoso-computerlab"
-#   location            = azurerm_resource_group.wvd.location
-#   resource_group_name = azurerm_resource_group.wvd.name
-#   host_pool_id        = azurerm_virtual_desktop_host_pool.wvd.id
-#   type                = "RemoteApp"
-#   friendly_name       = "Remote Apps"
-#   description         = "Remote applications for student use"
-# }
-
-resource "azurerm_virtual_desktop_application_group" "dag" {
-  name                = var.dag_name
-  location            = azurerm_resource_group.wvd.location
-  resource_group_name = azurerm_resource_group.wvd.name
-  host_pool_id        = azurerm_virtual_desktop_host_pool.wvd.id
-  type                = "Desktop"
-  friendly_name       = var.dag_friendly_name
-  description         = var.dag_description
-}
-
-resource "azurerm_virtual_desktop_workspace" "wvd" {
-  name                = var.ws_name
-  location            = azurerm_resource_group.wvd.location
-  resource_group_name = azurerm_resource_group.wvd.name
-  friendly_name       = var.ws_friendly_name
-  description         = var.ws_description
-}
-
-# resource "azurerm_virtual_desktop_workspace_application_group_association" "workspaceremoteapp" {
-#   workspace_id         = azurerm_virtual_desktop_workspace.wvd.id
-#   application_group_id = azurerm_virtual_desktop_application_group.rag.id
-# }
-
-resource "azurerm_virtual_desktop_workspace_application_group_association" "workspacedesktopapp" {
-  workspace_id         = azurerm_virtual_desktop_workspace.wvd.id
-  application_group_id = azurerm_virtual_desktop_application_group.dag.id
-}
-
-# Build session hosts using this: https://github.com/Azure/RDS-Templates/tree/master/wvd-sh/terraform-azurerm-windowsvirtualdesktop
-
-##############################################
 # OUTPUTS
 ##############################################
-
-output "hostpool_reg_token" {
-  value = azurerm_virtual_desktop_host_pool.wvd.registration_info[0].token
-}
-
 
 output "role_definition_id" {
   value = azurerm_role_definition.aib.id

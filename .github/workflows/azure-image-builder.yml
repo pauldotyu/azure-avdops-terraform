@@ -32,3 +32,4 @@ jobs:
         customizer-script: |
           & 'c:\workflow-artifacts\base-installs.ps1'
         customizer-windows-update: true
+        vm-size: 'Standard_DS4_v2'
