@@ -28,6 +28,8 @@ This repo will walk you through setting up the Azure infrastructure necessary to
 
     > There is a `variables.tf` file in the root directory which contain default values for variables. You should overwrite the defaults with your own values by providing a file that ends with the name `*.auto.tfvars` or if you are running Terraform Cloud in a remote workspace, you can add variables which effectively act as your remote `*.auto.tfvars` file
 
+# Build image using GitHub Action
+
 1. Add a new GitHub Action and paste in the following for a basic Windows 10 multi-session image build. See the .github/workflows directory in this repo for customizing your build.
 
     ```yml
