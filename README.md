@@ -50,16 +50,20 @@ This repo will walk you through setting up the Azure infrastructure necessary to
         - name: Build custom VM image
           uses: azure/build-vm-image@v0
           with:
-            resource-group-name: 'rg-ycc-aib'
-            managed-identity: 'ycc-aib'
-            location: 'westus2'
+            resource-group-name: '<YOUR RESOURCE GROUP>'
+            managed-identity: '<YOUR USER ASSIGNED MANAGED IDENTITY>'
+            location: '<YOUR AZURE IMAGE BUILDER LOCATION>'
             source-os-type: 'Windows'
             source-image-type: 'PlatformImage'
             source-image: microsoftwindowsdesktop:office-365:20h1-evd-o365pp:latest
             dist-type: 'SharedImageGallery'
             dist-resource-id: '/subscriptions/<YOUR SUBSCIRPTION ID>/resourceGroups/<YOUR RESOURCE GROUP>/providers/Microsoft.Compute/galleries/<YOUR SHARED IMAGE GALLERY NAME>/images/<YOUR SHARED IMAGE NAME>'
-            dist-location: 'westus2,centralus'
+            dist-location: '<YOUR SHARED IMAGE GALLERY REPLICATION LOCATIONS>'
     ```
+
+# Build a new WVD Session Host using your new image
+
+  1. If you navigate to the `remoteapps` or `desktopapps` subdirectory, you'll find additional Terraform that you can use to build your WVD Workspace, Application Groups, and Host Pool. From there, you'll need to jump into the Azure Portal and build your session hosts. This is assuming you have all the underlying plumbing in place such as AD to domain join your session host VMs and Azure Networking to place the VMs into.
 
 # Troubleshooting Tips
 
