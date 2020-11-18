@@ -43,14 +43,14 @@ Set-ItemProperty -Path HKLM:\Software\FSLogix\Profiles -Name "SIDDirNameMatch" -
 Write-Host "Start 10 second sleep"
 Start-Sleep -Seconds 10
 
-#########################################################################################
-# Download and install Teams
-#########################################################################################
-Write-Host "Downloaing Teams"
-New-Item -Path 'HKLM:\SOFTWARE\Citrix\PortICA' -Force | Out-Null
-Invoke-WebRequest -Uri 'https://teams.microsoft.com/downloads/desktopurl?env=production&plat=windows&download=true&managedInstaller=true&arch=x64' -OutFile 'c:\temp\Teams.msi'
-Write-Host "Start 10 second sleep"
-Start-Sleep -Seconds 10
+# #########################################################################################
+# # Download and install Teams
+# #########################################################################################
+# Write-Host "Downloaing Teams"
+# New-Item -Path 'HKLM:\SOFTWARE\Citrix\PortICA' -Force | Out-Null
+# Invoke-WebRequest -Uri 'https://teams.microsoft.com/downloads/desktopurl?env=production&plat=windows&download=true&managedInstaller=true&arch=x64' -OutFile 'c:\temp\Teams.msi'
+# Write-Host "Start 10 second sleep"
+# Start-Sleep -Seconds 10
 
 # Write-Host "Installing Teams"
 # Start-Process msiexec.exe -Wait -ArgumentList '/I c:\temp\Teams.msi /quiet /l*v c:\temp\teamsinstall.log ALLUSER=1 ALLUSERS=1'
