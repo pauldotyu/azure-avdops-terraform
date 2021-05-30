@@ -1,44 +1,23 @@
-variable "rg_aib_name" {
-  type        = string
-  description = "Resource group name for Azure Image Builder"
-}
-
-variable "rg_aib_location" {
+variable "location" {
   type        = string
   description = "Resource group location. Make sure you are deploying in a location where Azure Image Builder is supported"
 }
 
-variable "ua_managed_identity_name" {
-  type        = string
-  description = "Name for user assigned managed identity"
+variable "tags" {
+  type = map(any)
 }
 
-variable "role_def_name" {
-  type        = string
-  description = "Role definition name"
-}
-
-variable "sig_name" {
-  type        = string
-  description = "Shared Image Gallery name"
-}
-
-variable "sig_image_name" {
-  type        = string
-  description = "Image name"
-}
-
-variable "sig_publisher" {
+variable "publisher" {
   type        = string
   description = "Image publisher"
 }
 
-variable "sig_offer" {
+variable "offer" {
   type        = string
   description = "Image offer"
 }
 
-variable "sig_sku" {
+variable "sku" {
   type        = string
   description = "Image SKU"
 }
