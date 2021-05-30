@@ -3,7 +3,7 @@ terraform {
     organization = "pauldotyu"
 
     workspaces {
-      name = "azure-wvd"
+      name = "azure-wvdops-terraform"
     }
   }
 }
