@@ -78,20 +78,7 @@ jobs:
           echo ::set-output name=TF_SHARED_IMAGE_ID::$(terraform output -raw shared_image_id)
         id: terraform-apply
 
-  azure-image-builder:
-    name: 'Azure Image Builder'
-    # The type of runner that the job will run on
-    runs-on: self-hosted
-    environment: production
-
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
+       # https://github.com/marketplace/actions/azure-login
       - name: Azure login
         uses: azure/login@v1
         with:
@@ -100,17 +87,18 @@ jobs:
       - name: Wworkspace contents
         run: ls ${{ GITHUB.WORKSPACE }}
 
+      # https://github.com/marketplace/actions/build-azure-virtual-machine-image
       - name: Build custom VM image
         uses: azure/build-vm-image@v0
         with:        
-          resource-group-name: ${{ jobs.terraform.steps.terraform-apply.outputs.TF_RESOURCE_GROUP_NAME }}
-          managed-identity: ${{ jobs.terraform.steps.terraform-apply.outputs.TF_MANAGED_IDENTITY_NAME }} # if the managed identity is in your resource group, you can simply reference it by name; otherwise you'll need to include the id of the object
-          location: ${{ jobs.terraform.steps.terraform-apply.outputs.TF_LOCATION }}
+          resource-group-name: ${{ steps.terraform-apply.outputs.TF_RESOURCE_GROUP_NAME }}
+          managed-identity: ${{ steps.terraform-apply.outputs.TF_MANAGED_IDENTITY_NAME }} # if the managed identity is in your resource group, you can simply reference it by name; otherwise you'll need to include the id of the object
+          location: ${{ steps.terraform-apply.outputs.TF_LOCATION }}
           source-os-type: 'Windows'
           source-image-type: 'PlatformImage'
           source-image: microsoftwindowsdesktop:office-365:20h2-evd-o365pp:latest
           dist-type: 'SharedImageGallery'
-          dist-resource-id: ${{ jobs.terraform.steps.terraform-apply.outputs.TF_SHARED_IMAGE_ID }}
+          dist-resource-id: ${{ steps.terraform-apply.outputs.TF_SHARED_IMAGE_ID }}
           dist-location: 'westus2,westcentralus'
           customizer-script: |
             & 'c:\workflow-artifacts\base-installs.ps1'
