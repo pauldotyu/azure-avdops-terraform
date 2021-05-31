@@ -20,7 +20,7 @@ resource "azurerm_resource_group" "wvd" {
 }
 
 resource "azurerm_user_assigned_identity" "wvd" {
-  name                = "mi-${random_pet.wvd.id}"
+  name                = "msi-${random_pet.wvd.id}"
   resource_group_name = azurerm_resource_group.wvd.name
   location            = azurerm_resource_group.wvd.location
   tags                = var.tags
