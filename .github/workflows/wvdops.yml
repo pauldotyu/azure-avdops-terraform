@@ -83,8 +83,8 @@ jobs:
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
 
-      - name: Wworkspace contents
-        run: ls ${{ GITHUB.WORKSPACE }}
+      # - name: Wworkspace contents
+      #   run: ls ${{ GITHUB.WORKSPACE }}
 
       # https://github.com/marketplace/actions/build-azure-virtual-machine-image
       - name: Build custom VM image
