@@ -6,6 +6,6 @@ tags = {
   "protection-level"   = "p1"
   "availability-level" = "a1"
 }
-publisher = "YuCanCloud"
-offer     = "WVD"
-sku       = "YCCWVD"
+publisher = "yucancloud"
+offer     = "wvd"
+sku       = "latest"

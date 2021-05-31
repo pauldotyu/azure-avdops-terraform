@@ -73,6 +73,6 @@ resource "azurerm_shared_image" "wvd" {
   identifier {
     publisher = var.publisher
     offer     = var.offer
-    sku       = var.sku
+    sku       = random_pet.wvd.id
   }
 }
