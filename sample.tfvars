@@ -6,6 +6,6 @@ tags = {
   "protection-level"   = "p1"
   "availability-level" = "a1"
 }
-publisher = "yucancloud"
+publisher = "contoso"
 offer     = "windows"
 sku       = "wvd"
