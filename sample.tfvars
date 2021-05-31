@@ -7,5 +7,5 @@ tags = {
   "availability-level" = "a1"
 }
 publisher = "yucancloud"
-offer     = "wvd"
-sku       = "latest"
+offer     = "windows"
+sku       = "wvd"
