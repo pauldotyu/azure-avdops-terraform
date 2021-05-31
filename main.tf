@@ -64,7 +64,7 @@ resource "azurerm_shared_image_gallery" "wvd" {
 }
 
 resource "azurerm_shared_image" "wvd" {
-  name                = "windows-${random_pet.wvd.id}"
+  name                = "wvd-${random_pet.wvd.id}"
   gallery_name        = azurerm_shared_image_gallery.wvd.name
   resource_group_name = azurerm_resource_group.wvd.name
   location            = azurerm_resource_group.wvd.location
@@ -73,6 +73,6 @@ resource "azurerm_shared_image" "wvd" {
   identifier {
     publisher = var.publisher
     offer     = var.offer
-    sku       = random_pet.wvd.id
+    sku       = "wvd-${random_pet.wvd.id}"
   }
 }
