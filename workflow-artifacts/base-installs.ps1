@@ -105,6 +105,3 @@ Start-Sleep -Seconds 10
 
 # # Set the power profile to the High Performance
 # powercfg /setactive SCHEME_MIN
-
-# Configure WinRM
-winrm quickconfig
