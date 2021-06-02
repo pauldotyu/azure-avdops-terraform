@@ -91,7 +91,7 @@ resource "azurerm_storage_account" "wvd" {
   allow_blob_public_access = false
 }
 
-resource "azurerm_storage_share" "example" {
+resource "azurerm_storage_share" "wvd" {
   name                 = "profiles"
   storage_account_name = azurerm_storage_account.wvd.name
   quota                = 100
