@@ -1,7 +1,7 @@
-# #########################################################################################
-# # Create a temp working directory
-# #########################################################################################
-# New-Item -Path 'C:\temp' -ItemType Directory -Force | Out-Null
+#########################################################################################
+# Create a temp working directory
+#########################################################################################
+New-Item -Path 'C:\temp' -ItemType Directory -Force | Out-Null
 
 # #########################################################################################
 # # Download, install, and configure FSLogix
@@ -105,3 +105,6 @@ Start-Sleep -Seconds 10
 
 # # Set the power profile to the High Performance
 # powercfg /setactive SCHEME_MIN
+
+# Configure WinRM
+winrm quickconfig
