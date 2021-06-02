@@ -76,3 +76,23 @@ resource "azurerm_shared_image" "wvd" {
     sku       = "wvd-${random_pet.wvd.id}"
   }
 }
+
+##############################################
+# AZURE FILES
+##############################################
+
+resource "azurerm_storage_account" "wvd" {
+  name                     = "sa${random_pet.wvd.id}"
+  resource_group_name      = azurerm_resource_group.wvd.name
+  location                 = azurerm_resource_group.wvd.location
+  account_tier             = "Premium"
+  account_kind             = "FileStorage"
+  account_replication_type = "LRS"
+  allow_blob_public_access = false
+}
+
+resource "azurerm_storage_share" "example" {
+  name                 = "profiles"
+  storage_account_name = azurerm_storage_account.wvd.name
+  quota                = 100
+}
