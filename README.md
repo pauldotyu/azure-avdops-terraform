@@ -63,7 +63,7 @@ This repo will walk you through setting up the Azure infrastructure necessary to
             dist-location: '<YOUR SHARED IMAGE GALLERY REPLICATION LOCATIONS>'
     ```
 
-# Build a new WVD Session Host using your new image
+# Build a new AVD Session Host using your new image
 
   1. If you navigate to the https://github.com/pauldotyu/azure-avd-terraform repo, you'll find additional Terraform that you can use to build your WVD Workspace, Application Groups, Host Pool, and Session Hosts. 
 
