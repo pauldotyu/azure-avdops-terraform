@@ -65,7 +65,7 @@ This repo will walk you through setting up the Azure infrastructure necessary to
 
 # Build a new WVD Session Host using your new image
 
-  1. If you navigate to the `remoteapps` or `desktopapps` subdirectory, you'll find additional Terraform that you can use to build your WVD Workspace, Application Groups, and Host Pool. From there, you'll need to jump into the Azure Portal and build your session hosts. This is assuming you have all the underlying plumbing in place such as AD to domain join your session host VMs and Azure Networking to place the VMs into.
+  1. If you navigate to the https://github.com/pauldotyu/azure-avd-terraform repo, you'll find additional Terraform that you can use to build your WVD Workspace, Application Groups, Host Pool, and Session Hosts. 
 
 # Troubleshooting Tips
 
