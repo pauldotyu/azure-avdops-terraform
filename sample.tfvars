@@ -8,4 +8,4 @@ tags = {
 }
 publisher = "contoso"
 offer     = "windows"
-sku       = "wvd"
+sku       = "avd"

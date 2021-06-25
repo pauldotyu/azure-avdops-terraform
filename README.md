@@ -1,4 +1,4 @@
-[![WVDOps](https://github.com/pauldotyu/azure-wvdops-terraform/actions/workflows/wvdops.yml/badge.svg)](https://github.com/pauldotyu/azure-wvdops-terraform/actions/workflows/wvdops.yml)
+[![AVDOps](https://github.com/pauldotyu/azure-avdops-terraform/actions/workflows/avdops.yml/badge.svg)](https://github.com/pauldotyu/azure-avdops-terraform/actions/workflows/avdops.yml)
 
 # Overview
 
