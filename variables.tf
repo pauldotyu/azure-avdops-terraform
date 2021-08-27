@@ -6,7 +6,7 @@ variable "location" {
 variable "tags" {
   type = map(any)
   default = {
-    "project" = "gh-avdops-demo"
+    "project" = "avdops-demo"
   }
 }
 
