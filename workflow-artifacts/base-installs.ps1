@@ -70,11 +70,11 @@ New-Item -Path 'C:\temp' -ItemType Directory -Force | Out-Null
 #########################################################################################
 # Download and install VSCode
 #########################################################################################
-Write-Host "Install VSCode"
-Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?Linkid=852157' -OutFile 'c:\temp\VScode.exe'
-Invoke-Expression -Command 'c:\temp\VScode.exe /verysilent'
-Write-Host "Start 10 second sleep"
-Start-Sleep -Seconds 10
+#Write-Host "Install VSCode"
+#Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?Linkid=852157' -OutFile 'c:\temp\VScode.exe'
+#Invoke-Expression -Command 'c:\temp\VScode.exe /verysilent'
+#Write-Host "Start 10 second sleep"
+#Start-Sleep -Seconds 10
 
 # #########################################################################################
 # # Registry settings
