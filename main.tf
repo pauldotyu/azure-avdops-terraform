@@ -69,6 +69,7 @@ resource "azurerm_shared_image" "avd" {
   resource_group_name = azurerm_resource_group.avd.name
   location            = azurerm_resource_group.avd.location
   os_type             = "Windows"
+  hyper_v_generation  = "V2"
 
   identifier {
     publisher = var.publisher

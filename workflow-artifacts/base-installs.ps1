@@ -1,7 +1,9 @@
+Write-Output "Azure Image Builder was here!"
+
 #########################################################################################
 # Create a temp working directory
 #########################################################################################
-New-Item -Path 'C:\temp' -ItemType Directory -Force | Out-Null
+# New-Item -Path 'C:\temp' -ItemType Directory -Force | Out-Null
 
 # #########################################################################################
 # # Download, install, and configure FSLogix
@@ -107,4 +109,4 @@ New-Item -Path 'C:\temp' -ItemType Directory -Force | Out-Null
 # powercfg /setactive SCHEME_MIN
 
 # Enable PSRemoting
-Enable-PSRemoting -Force
+# Enable-PSRemoting -Force
