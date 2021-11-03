@@ -97,7 +97,7 @@ jobs:
           location: ${{ steps.terraform-apply.outputs.TF_LOCATION }}
           source-os-type: "Windows"
           source-image-type: "PlatformImage"
-          source-image: microsoftwindowsdesktop:office-365:win11-21h2-avd-m365:latest
+          source-image: microsoftwindowsdesktop:office-365:20h2-evd-o365pp:latest
           dist-type: "SharedImageGallery"
           dist-resource-id: ${{ steps.terraform-apply.outputs.TF_SHARED_IMAGE_ID }}
           dist-location: "westus2,westcentralus"
