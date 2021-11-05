@@ -100,7 +100,7 @@ jobs:
           source-image: microsoftwindowsdesktop:office-365:20h2-evd-o365pp:latest
           dist-type: "SharedImageGallery"
           dist-resource-id: ${{ steps.terraform-apply.outputs.TF_SHARED_IMAGE_ID }}
-          dist-location: "westus2,westcentralus"
+          dist-location: "westus2"
           customizer-script: |
             & 'c:\workflow-artifacts\base-installs.ps1'
           customizer-windows-update: true
