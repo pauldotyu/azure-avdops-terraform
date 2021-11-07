@@ -4,15 +4,16 @@ on:
   push:
     paths:
       - ".github/workflows/func.yml"
-      - "functions/**"
+      - "function/**"
 
 env:
-  AZURE_FUNCTIONAPP_NAME: func-ethicalbedbug # set this to your application's name
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: "./functions" # set this to the path to your web app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_NAME: funcethicalbedbug # set this to your application's name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: "./function" # set this to the path to your web app project, defaults to the repository root
 
 jobs:
   func-deploy:
     runs-on: windows-latest
+    environment: production
     steps:
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master

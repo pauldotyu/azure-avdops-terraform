@@ -6,7 +6,7 @@ on:
   push:
     paths-ignore: # Don't trigger on files that are updated by the CI
       - ".github/workflows/func.yml"
-      - "functions/**"
+      - "function/**"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
