@@ -105,14 +105,14 @@ resource "azurerm_storage_share" "avd" {
 #################################################
 
 resource "azurerm_application_insights" "avd" {
-  name                = "ai-${random_pet.avd.id}"
+  name                = "func${random_pet.avd.id}-appinsights"
   resource_group_name = azurerm_resource_group.avd.name
   location            = azurerm_resource_group.avd.location
   application_type    = "web"
 }
 
 resource "azurerm_app_service_plan" "avd" {
-  name                = "func-${random_pet.avd.id}-plan"
+  name                = "func${random_pet.avd.id}-plan"
   resource_group_name = azurerm_resource_group.avd.name
   location            = azurerm_resource_group.avd.location
   kind                = "FunctionApp"
@@ -124,7 +124,7 @@ resource "azurerm_app_service_plan" "avd" {
 }
 
 resource "azurerm_function_app" "avd" {
-  name                       = "func-${random_pet.avd.id}"
+  name                       = "func${random_pet.avd.id}"
   resource_group_name        = azurerm_resource_group.avd.name
   location                   = azurerm_resource_group.avd.location
   app_service_plan_id        = azurerm_app_service_plan.avd.id
@@ -205,3 +205,12 @@ resource "azurerm_eventgrid_system_topic" "avd" {
 #     event_time_to_live    = 1440
 #   }
 # }
+
+resource "azurerm_automation_account" "avd" {
+  name                = "aa-${random_pet.avd.id}"
+  location            = azurerm_resource_group.avd.location
+  resource_group_name = azurerm_resource_group.avd.name
+
+  sku_name = "Basic"
+}
+

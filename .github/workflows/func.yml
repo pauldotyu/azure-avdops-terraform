@@ -1,4 +1,4 @@
-name: FunctionAppDeploy
+name: FunctionDeploy
 
 on:
   push:
