@@ -6,9 +6,13 @@ on:
   push:
     branches:
       - main
+    paths-ignore: # Don't trigger on files that are updated by the CI
+      - "functions/**"
   pull_request:
     branches:
       - main
+    paths-ignore: # Don't trigger on files that are updated by the CI
+      - "functions/**"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
