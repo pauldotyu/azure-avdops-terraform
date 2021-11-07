@@ -1,8 +1,9 @@
-name: Deploy PowerShell project to Azure Function App
+name: FunctionAppDeploy
 
 on:
   push:
     paths:
+      - ".github/workflows/func.yml"
       - "functions/**"
 
 env:
@@ -10,7 +11,7 @@ env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "./functions" # set this to the path to your web app project, defaults to the repository root
 
 jobs:
-  build-and-deploy:
+  func-deploy:
     runs-on: windows-latest
     steps:
       - name: "Checkout GitHub Action"
