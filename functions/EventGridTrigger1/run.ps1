@@ -1,7 +1,7 @@
 param($eventGridEvent, $TriggerMetadata)
 
-# Authenticate using managed identity
-Connect-AzAccount -Identity
+# Make sure to pass hashtables to Out-String so they're logged correctly
+$eventGridEvent | Out-String | Write-Host
 
 # Make sure to pass hashtables to Out-String so they're logged correctly
 $eventGridEvent | Out-String | Write-Host
