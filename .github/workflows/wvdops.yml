@@ -102,6 +102,6 @@ jobs:
           dist-resource-id: ${{ steps.terraform-apply.outputs.TF_SHARED_IMAGE_ID }}
           dist-location: "westus2"
           customizer-script: |
-            & 'c:\workflow-artifacts\base-installs.ps1'
+            & 'c:\workflow-artifacts\say-hello.ps1'
           customizer-windows-update: true
           vm-size: "Standard_DS4_v2"

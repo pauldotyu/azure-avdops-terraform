@@ -1,0 +1,1 @@
+Write-Host "Hello from Azure Image Builder!"
