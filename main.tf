@@ -194,15 +194,12 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "avd" {
       ]
     }
 
-    # # this is the terraform cloud service principal: az ad sp show --id 8df9509d7a934f0db6345a23b1036dda
-    # string_contains {
-    #   key = "data.claims.appid"
-    #   values = [
-    #     azurerm_user_assigned_identity.avd.client_id
-    #     # data.azurerm_client_config.current.client_id
-
-    #   ]
-    # }
+    string_contains {
+      key = "data.authorization.evidence.principalId"
+      values = [
+        azurerm_user_assigned_identity.avd.principal_id
+      ]
+    }
   }
 
   azure_function_endpoint {
