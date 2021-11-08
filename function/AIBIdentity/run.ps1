@@ -1,6 +1,8 @@
 param($eventGridEvent, $TriggerMetadata)
 
-Import-Module Az
+Import-Module Az.Accounts
+Import-Module Az.Resources
+Import-Module Az.Compute
 
 # Authenticate using managed identity
 Connect-AzAccount -Identity
