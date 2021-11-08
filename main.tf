@@ -104,6 +104,24 @@ resource "azurerm_storage_share" "avd" {
 # AZURE EVENT GRID FOR SECURE AIB
 #################################################
 
+data "azuread_group" "aib" {
+  display_name     = "AIB"
+  security_enabled = true
+}
+
+resource "azurerm_storage_account" "avd_installs" {
+  name                     = "sa${random_pet.avd.id}installs"
+  resource_group_name      = azurerm_resource_group.avd.name
+  location                 = azurerm_resource_group.avd.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_role_assignment" "example" {
+  scope                = azurerm_storage_account.avd_installs.id
+  role_definition_name = "Storage Blob Data Reader"
+  principal_id         = data.azuread_group.aib.object_id
+}
 
 resource "azurerm_storage_account" "avd_func" {
   name                     = "func${random_pet.avd.id}storage"
