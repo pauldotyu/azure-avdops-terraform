@@ -1,5 +1,7 @@
 param($eventGridEvent, $TriggerMetadata)
 
+Import-Module Az
+
 # Authenticate using managed identity
 Connect-AzAccount -Identity
 
@@ -16,7 +18,7 @@ $vm = Get-AzVM -Name $vmResource.Name -ResourceGroupName $vmResource.ResourceGro
 
 Write-Host $vm.Id
 
-#Update-AzVM -VM $vm -IdentityType SystemAssigned -ResourceGroupName $vmResource.ResourceGroupName
+Update-AzVM -VM $vm -IdentityType SystemAssigned -ResourceGroupName $vmResource.ResourceGroupName
 
 #$vm = Get-AzVM -Name $vmResource.Name -ResourceGroupName $vmResource.ResourceGroupName
 #$id = $vm.Identity.PrincipalId
