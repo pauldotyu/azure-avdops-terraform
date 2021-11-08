@@ -1,10 +1,12 @@
-name: FunctionDeploy
+name: Azure Function App
 
 on:
   push:
     paths:
       - ".github/workflows/func.yml"
       - "function/**"
+
+  workflow_dispatch:
 
 env:
   AZURE_FUNCTIONAPP_NAME: funcethicalbedbug # set this to your application's name
