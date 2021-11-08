@@ -1,0 +1,105 @@
+name: Azure Image Builder
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    paths-ignore: # Don't trigger on files that are updated by the CI
+      - ".github/workflows/func.yml"
+      - "function/**"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "terraform"
+  terraform:
+    name: "Terraform"
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # The environment will be used to determine which GitHub Secrets to use
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1.2.1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }} # Using TF Cloud for remote state storage but run locally so we'll need to use Azure CLI login context
+          terraform_wrapper: false
+
+      # Checks that all Terraform configuration files adhere to a canonical format. If the fmt is bad, the job will fail
+      - name: Terraform Format
+        run: terraform fmt -check
+        continue-on-error: true
+
+      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+      - name: Terraform Init
+        run: |
+          export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
+          export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}
+          export ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}
+          export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
+          terraform init
+
+      # Generates an execution plan for Terraform
+      - name: Terraform Plan
+        run: |
+          export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
+          export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}
+          export ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}
+          export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
+          terraform plan -var-file=sample.tfvars -out=main.tfplan
+
+      # On push to main, build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
+          export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}
+          export ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}
+          export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
+          terraform apply -auto-approve main.tfplan
+          echo ::set-output name=TF_RESOURCE_GROUP_NAME::$(terraform output -raw resource_group_name)
+          echo ::set-output name=TF_LOCATION::$(terraform output -raw location)
+          echo ::set-output name=TF_MANAGED_IDENTITY_NAME::$(terraform output -raw managed_identity_name)
+          echo ::set-output name=TF_SHARED_IMAGE_ID::$(terraform output -raw shared_image_id)
+        id: terraform-apply
+
+      # https://github.com/marketplace/actions/azure-login
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+
+      # - name: Wworkspace contents
+      #   run: ls ${{ GITHUB.WORKSPACE }}
+
+      # https://github.com/marketplace/actions/build-azure-virtual-machine-image
+      - name: Build custom VM image
+        uses: azure/build-vm-image@v0
+        with:
+          resource-group-name: ${{ steps.terraform-apply.outputs.TF_RESOURCE_GROUP_NAME }}
+          managed-identity: ${{ steps.terraform-apply.outputs.TF_MANAGED_IDENTITY_NAME }} # if the managed identity is in your resource group, you can simply reference it by name; otherwise you'll need to include the id of the object
+          location: ${{ steps.terraform-apply.outputs.TF_LOCATION }}
+          source-os-type: "Windows"
+          source-image-type: "PlatformImage"
+          source-image: microsoftwindowsdesktop:office-365:20h2-evd-o365pp:latest
+          dist-type: "SharedImageGallery"
+          dist-resource-id: ${{ steps.terraform-apply.outputs.TF_SHARED_IMAGE_ID }}
+          dist-location: "westus2"
+          customizer-script: |
+            & 'c:\workflow-artifacts\say-hello.ps1'
+          customizer-windows-update: true
+          vm-size: "Standard_DS4_v2"
