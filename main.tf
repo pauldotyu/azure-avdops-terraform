@@ -104,6 +104,15 @@ resource "azurerm_storage_share" "avd" {
 # AZURE EVENT GRID FOR SECURE AIB
 #################################################
 
+
+resource "azurerm_storage_account" "avd_func" {
+  name                     = "func${random_pet.avd.id}storage"
+  resource_group_name      = azurerm_resource_group.avd.name
+  location                 = azurerm_resource_group.avd.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
 resource "azurerm_application_insights" "avd" {
   name                = "func${random_pet.avd.id}-appinsights"
   resource_group_name = azurerm_resource_group.avd.name
@@ -128,8 +137,8 @@ resource "azurerm_function_app" "avd" {
   resource_group_name        = azurerm_resource_group.avd.name
   location                   = azurerm_resource_group.avd.location
   app_service_plan_id        = azurerm_app_service_plan.avd.id
-  storage_account_name       = azurerm_storage_account.avd.name
-  storage_account_access_key = azurerm_storage_account.avd.primary_access_key
+  storage_account_name       = azurerm_storage_account.avd_func.name
+  storage_account_access_key = azurerm_storage_account.avd_func.primary_access_key
 
   identity {
     type = "SystemAssigned"
@@ -159,58 +168,60 @@ resource "azurerm_eventgrid_system_topic" "avd" {
   topic_type             = "Microsoft.Resources.Subscriptions"
 }
 
-# # this cannot be done until the function app has been deployed
-# resource "azurerm_eventgrid_system_topic_event_subscription" "avd" {
-#   name                  = "eg-${random_pet.avd.id}Subscription"
-#   resource_group_name   = azurerm_resource_group.avd.name
-#   system_topic          = azurerm_eventgrid_system_topic.avd.name
-#   event_delivery_schema = "EventGridSchema"
+# this cannot be done until the function app has been deployed
+resource "azurerm_eventgrid_system_topic_event_subscription" "avd" {
+  name                  = "eg-${random_pet.avd.id}Subscription"
+  resource_group_name   = azurerm_resource_group.avd.name
+  system_topic          = azurerm_eventgrid_system_topic.avd.name
+  event_delivery_schema = "EventGridSchema"
 
-#   included_event_types = [
-#     "Microsoft.Resources.ResourceWriteSuccess"
-#   ]
+  included_event_types = [
+    "Microsoft.Resources.ResourceWriteSuccess"
+  ]
 
-#   advanced_filter {
-#     string_contains {
-#       key = "data.resourceProvider"
-#       values = [
-#         "Microsoft.Compute"
-#       ]
-#     }
+  advanced_filter {
+    string_contains {
+      key = "data.resourceProvider"
+      values = [
+        "Microsoft.Compute"
+      ]
+    }
 
-#     string_contains {
-#       key = "data.operationName"
-#       values = [
-#         "Microsoft.Compute/virtualMachines/write"
-#       ]
-#     }
+    string_contains {
+      key = "data.operationName"
+      values = [
+        "Microsoft.Compute/virtualMachines/write"
+      ]
+    }
 
-#     # this is the terraform cloud service principal: az ad sp show --id 8df9509d7a934f0db6345a23b1036dda
-#     string_contains {
-#       key = "data.claims.appid"
-#       values = [
-#         data.azurerm_client_config.current.client_id
-#       ]
-#     }
-#   }
+    # this is the terraform cloud service principal: az ad sp show --id 8df9509d7a934f0db6345a23b1036dda
+    string_contains {
+      key = "data.claims.appid"
+      values = [
+        azurerm_user_assigned_identity.avd.client_id
+        # data.azurerm_client_config.current.client_id
 
-#   azure_function_endpoint {
-#     function_id                       = "${azurerm_function_app.avd.id}/functions/EventGridTrigger1"
-#     max_events_per_batch              = 1
-#     preferred_batch_size_in_kilobytes = 64
-#   }
+      ]
+    }
+  }
 
-#   retry_policy {
-#     max_delivery_attempts = 30
-#     event_time_to_live    = 1440
-#   }
-# }
+  azure_function_endpoint {
+    function_id                       = "${azurerm_function_app.avd.id}/functions/AIBIdentity"
+    max_events_per_batch              = 1
+    preferred_batch_size_in_kilobytes = 64
+  }
 
-resource "azurerm_automation_account" "avd" {
-  name                = "aa-${random_pet.avd.id}"
-  location            = azurerm_resource_group.avd.location
-  resource_group_name = azurerm_resource_group.avd.name
-
-  sku_name = "Basic"
+  retry_policy {
+    max_delivery_attempts = 30
+    event_time_to_live    = 1440
+  }
 }
+
+# resource "azurerm_automation_account" "avd" {
+#   name                = "aa-${random_pet.avd.id}"
+#   location            = azurerm_resource_group.avd.location
+#   resource_group_name = azurerm_resource_group.avd.name
+
+#   sku_name = "Basic"
+# }
 
