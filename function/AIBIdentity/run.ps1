@@ -13,12 +13,12 @@ $vm = Get-AzVM -Name $vmResource.Name -ResourceGroupName $vmResource.ResourceGro
 
 Write-Host $vm.Id
 
-#Update-AzVM -VM $vm -IdentityType SystemAssigned -ResourceGroupName $vmResource.ResourceGroupName
+Update-AzVM -VM $vm -IdentityType SystemAssigned -ResourceGroupName $vmResource.ResourceGroupName
 
-#$vm = Get-AzVM -Name $vmResource.Name -ResourceGroupName $vmResource.ResourceGroupName
-#$id = $vm.Identity.PrincipalId
+$vm = Get-AzVM -Name $vmResource.Name -ResourceGroupName $vmResource.ResourceGroupName
+$id = $vm.Identity.PrincipalId
 
-#Write-Host $id
+Write-Host $id
 
 #$groupId = (Get-AzADGroup -DisplayName $vmResource.ResourceGroupName).ID
 #Add-AzADGroupMember -MemberObjectId $id -TargetGroupObjectId $groupId
