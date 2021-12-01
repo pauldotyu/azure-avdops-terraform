@@ -5,6 +5,7 @@ tags = {
   "mission"            = "administrative"
   "protection-level"   = "p1"
   "availability-level" = "a1"
+  "repo"               = "pauldotyu/azure-avdops-terraform"
 }
 publisher = "contoso"
 offer     = "windows"
