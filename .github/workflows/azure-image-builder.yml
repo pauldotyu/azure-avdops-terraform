@@ -12,7 +12,7 @@ on:
 
 env:
   AZURE_RESOURCE_GROUP_NAME: "rg-avdopslonghorn"
-  AZURE_RESOURCE_GROUP_LOCATION: "eastus2"
+  AZURE_RESOURCE_GROUP_LOCATION: "northcentralus"
   AZURE_MANAGED_IDENTITY_NAME: "msi-avdopslonghorn"
   AZURE_SHARED_IMAGE_GALLERY_NAME: "acgavdopslonghorn"
   AZURE_SHARED_IMAGE_DEFINITION_NAME: "img-avdopslonghorn"
