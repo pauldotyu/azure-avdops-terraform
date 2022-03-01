@@ -12,7 +12,7 @@ on:
 
 env:
   AZURE_RESOURCE_GROUP_NAME: "rg-avdopslonghorn"
-  AZURE_RESOURCE_GROUP_LOCATION: "northcentralus"
+  AZURE_RESOURCE_GROUP_LOCATION: "southcentralus"
   AZURE_MANAGED_IDENTITY_NAME: "msi-avdopslonghorn"
   AZURE_SHARED_IMAGE_GALLERY_NAME: "acgavdopslonghorn"
   AZURE_SHARED_IMAGE_DEFINITION_NAME: "img-avdopslonghorn"
@@ -58,7 +58,7 @@ jobs:
           source-image: microsoftwindowsdesktop:office-365:win11-21h2-avd-m365:latest
           dist-type: "SharedImageGallery"
           dist-resource-id: "/subscriptions/${{ secrets.ARM_SUBSCRIPTION_ID }}/resourceGroups/${{ env.AZURE_RESOURCE_GROUP_NAME }}/providers/Microsoft.Compute/galleries/${{ env.AZURE_SHARED_IMAGE_GALLERY_NAME }}/images/${{ env.AZURE_SHARED_IMAGE_DEFINITION_NAME }}"
-          dist-location: "westus2"
+          dist-location: "southcentralus, westus2"
           customizer-script: |
             & 'c:\workflow-artifacts\say-hello.ps1'
           customizer-windows-update: true
