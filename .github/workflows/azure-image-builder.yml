@@ -52,7 +52,7 @@ jobs:
         with:
           resource-group-name: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
           managed-identity: ${{ env.AZURE_MANAGED_IDENTITY_NAME }} # if the managed identity is in your resource group, you can simply reference it by name; otherwise you'll need to include the id of the object
-          location: ${{ env.AZURE_RESOURCE_GROUP_LOCATION }}
+          location: "westus2"
           source-os-type: "Windows"
           source-image-type: "PlatformImage"
           source-image: microsoftwindowsdesktop:office-365:win11-21h2-avd-m365:latest
