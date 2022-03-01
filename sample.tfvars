@@ -1,7 +1,7 @@
 location = "westus2"
 tags = {
   "po-number"          = "zzz"
-  "environment"        = "prod"
+  "environment"        = "dev"
   "mission"            = "administrative"
   "protection-level"   = "p1"
   "availability-level" = "a1"
