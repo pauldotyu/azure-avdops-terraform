@@ -27,6 +27,18 @@ resource "azurerm_resource_group" "avd" {
 }
 
 #######################################
+# AZURE LOG ANALYTICS WORKSPACE
+#######################################
+
+resource "azurerm_log_analytics_workspace" "avd" {
+  name                = "law-${local.resource_name}"
+  location            = azurerm_resource_group.avd.location
+  resource_group_name = azurerm_resource_group.avd.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+}
+
+#######################################
 # AZURE IMAGE BUILDER
 #######################################
 
@@ -75,7 +87,7 @@ resource "azurerm_shared_image_gallery" "avd" {
 }
 
 resource "azurerm_shared_image" "avd" {
-  name                = "img-${local.resource_name}"
+  name                = "windows11-m365-202202"
   gallery_name        = azurerm_shared_image_gallery.avd.name
   resource_group_name = azurerm_resource_group.avd.name
   location            = azurerm_resource_group.avd.location
@@ -109,114 +121,105 @@ resource "azurerm_storage_share" "avd" {
   quota                = 100
 }
 
-#################################################
-# AZURE EVENT GRID FOR SECURE AIB
-#################################################
+# #################################################
+# # AZURE EVENT GRID FOR SECURE AIB
+# #################################################
 
-data "azuread_group" "aib" {
-  display_name     = "AIB"
-  security_enabled = true
-}
+# data "azuread_group" "aib" {
+#   display_name     = "AIB"
+#   security_enabled = true
+# }
 
-resource "azurerm_storage_account" "avd_installs" {
-  name                     = "sa${local.resource_name_unique}"
-  resource_group_name      = azurerm_resource_group.avd.name
-  location                 = azurerm_resource_group.avd.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
+# resource "azurerm_storage_account" "avd_installs" {
+#   name                     = "sa${local.resource_name_unique}"
+#   resource_group_name      = azurerm_resource_group.avd.name
+#   location                 = azurerm_resource_group.avd.location
+#   account_tier             = "Standard"
+#   account_replication_type = "LRS"
+# }
 
-resource "azurerm_role_assignment" "example" {
-  scope                = azurerm_storage_account.avd_installs.id
-  role_definition_name = "Storage Blob Data Reader"
-  principal_id         = data.azuread_group.aib.object_id
-}
+# resource "azurerm_role_assignment" "example" {
+#   scope                = azurerm_storage_account.avd_installs.id
+#   role_definition_name = "Storage Blob Data Reader"
+#   principal_id         = data.azuread_group.aib.object_id
+# }
 
-resource "azurerm_storage_account" "avd_func" {
-  name                     = "func${local.resource_name_unique}"
-  resource_group_name      = azurerm_resource_group.avd.name
-  location                 = azurerm_resource_group.avd.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
+# resource "azurerm_storage_account" "avd_func" {
+#   name                     = "func${local.resource_name_unique}"
+#   resource_group_name      = azurerm_resource_group.avd.name
+#   location                 = azurerm_resource_group.avd.location
+#   account_tier             = "Standard"
+#   account_replication_type = "LRS"
+# }
 
+# resource "azurerm_application_insights" "avd" {
+#   name                = "ai-${local.resource_name}"
+#   resource_group_name = azurerm_resource_group.avd.name
+#   location            = azurerm_resource_group.avd.location
+#   workspace_id        = azurerm_log_analytics_workspace.avd.id
+#   application_type    = "web"
+# }
 
-resource "azurerm_log_analytics_workspace" "avd" {
-  name                = "law-${local.resource_name}"
-  location            = azurerm_resource_group.avd.location
-  resource_group_name = azurerm_resource_group.avd.name
-  sku                 = "PerGB2018"
-  retention_in_days   = 30
-}
+# resource "azurerm_app_service_plan" "avd" {
+#   name                = "func${local.resource_name}-plan"
+#   resource_group_name = azurerm_resource_group.avd.name
+#   location            = azurerm_resource_group.avd.location
+#   kind                = "FunctionApp"
 
-resource "azurerm_application_insights" "avd" {
-  name                = "ai-${local.resource_name}"
-  resource_group_name = azurerm_resource_group.avd.name
-  location            = azurerm_resource_group.avd.location
-  workspace_id        = azurerm_log_analytics_workspace.avd.id
-  application_type    = "web"
-}
+#   sku {
+#     tier = "Dynamic"
+#     size = "Y1"
+#   }
+# }
 
-resource "azurerm_app_service_plan" "avd" {
-  name                = "func${local.resource_name}-plan"
-  resource_group_name = azurerm_resource_group.avd.name
-  location            = azurerm_resource_group.avd.location
-  kind                = "FunctionApp"
+# resource "azurerm_function_app" "avd" {
+#   name                       = "func${local.resource_name}"
+#   resource_group_name        = azurerm_resource_group.avd.name
+#   location                   = azurerm_resource_group.avd.location
+#   app_service_plan_id        = azurerm_app_service_plan.avd.id
+#   storage_account_name       = azurerm_storage_account.avd_func.name
+#   storage_account_access_key = azurerm_storage_account.avd_func.primary_access_key
 
-  sku {
-    tier = "Dynamic"
-    size = "Y1"
-  }
-}
+#   identity {
+#     type = "SystemAssigned"
+#   }
 
-resource "azurerm_function_app" "avd" {
-  name                       = "func${local.resource_name}"
-  resource_group_name        = azurerm_resource_group.avd.name
-  location                   = azurerm_resource_group.avd.location
-  app_service_plan_id        = azurerm_app_service_plan.avd.id
-  storage_account_name       = azurerm_storage_account.avd_func.name
-  storage_account_access_key = azurerm_storage_account.avd_func.primary_access_key
+#   app_settings = {
+#     FUNCTIONS_WORKER_RUNTIME              = "powershell"
+#     FUNCTIONS_WORKER_RUNTIME_VERSION      = "~7"
+#     APPINSIGHTS_INSTRUMENTATIONKEY        = azurerm_application_insights.avd.instrumentation_key
+#     APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.avd.connection_string
+#   }
 
-  identity {
-    type = "SystemAssigned"
-  }
+#   version = "~3"
+# }
 
-  app_settings = {
-    FUNCTIONS_WORKER_RUNTIME              = "powershell"
-    FUNCTIONS_WORKER_RUNTIME_VERSION      = "~7"
-    APPINSIGHTS_INSTRUMENTATIONKEY        = azurerm_application_insights.avd.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.avd.connection_string
-  }
+# resource "azurerm_role_assignment" "avd_func" {
+#   scope                = data.azurerm_subscription.current.id
+#   role_definition_name = "Contributor"
+#   principal_id         = azurerm_function_app.avd.identity[0].principal_id
+# }
 
-  version = "~3"
-}
+# resource "azurerm_eventgrid_system_topic" "avd" {
+#   name                   = "eg-${local.resource_name}Topic"
+#   resource_group_name    = azurerm_resource_group.avd.name
+#   location               = "Global"
+#   source_arm_resource_id = data.azurerm_subscription.current.id
+#   topic_type             = "Microsoft.Resources.Subscriptions"
+# }
 
-resource "azurerm_role_assignment" "avd_func" {
-  scope                = data.azurerm_subscription.current.id
-  role_definition_name = "Contributor"
-  principal_id         = azurerm_function_app.avd.identity[0].principal_id
-}
+# resource "null_resource" "func_zip_deploy" {
+#   triggers = {
+#     always_run = "${timestamp()}"
+#   }
 
-resource "azurerm_eventgrid_system_topic" "avd" {
-  name                   = "eg-${local.resource_name}Topic"
-  resource_group_name    = azurerm_resource_group.avd.name
-  location               = "Global"
-  source_arm_resource_id = data.azurerm_subscription.current.id
-  topic_type             = "Microsoft.Resources.Subscriptions"
-}
-
-resource "null_resource" "func_zip_deploy" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command = <<EOT
-      zip -r function.zip function
-      az functionapp deployment source config-zip -g ${azurerm_resource_group.avd.name} -n ${azurerm_function_app.avd.name} --src function.zip
-    EOT
-  }
-}
+#   provisioner "local-exec" {
+#     command = <<EOT
+#       zip -r function.zip function
+#       az functionapp deployment source config-zip -g ${azurerm_resource_group.avd.name} -n ${azurerm_function_app.avd.name} --src function.zip
+#     EOT
+#   }
+# }
 
 # # this cannot be done until the function app has been deployed
 # resource "azurerm_eventgrid_system_topic_event_subscription" "avd" {
@@ -268,20 +271,20 @@ resource "null_resource" "func_zip_deploy" {
 #   ]
 # }
 
-resource "azurerm_automation_account" "avd" {
-  name                = "aa-${local.resource_name}"
-  location            = azurerm_resource_group.avd.location
-  resource_group_name = azurerm_resource_group.avd.name
+# resource "azurerm_automation_account" "avd" {
+#   name                = "aa-${local.resource_name}"
+#   location            = azurerm_resource_group.avd.location
+#   resource_group_name = azurerm_resource_group.avd.name
 
-  identity {
-    type = "SystemAssigned"
-  }
+#   identity {
+#     type = "SystemAssigned"
+#   }
 
-  sku_name = "Basic"
-}
+#   sku_name = "Basic"
+# }
 
-resource "azurerm_role_assignment" "avd_automation" {
-  scope                = azurerm_resource_group.avd.id
-  role_definition_name = "Contributor"
-  principal_id         = azurerm_automation_account.avd.identity[0].principal_id
-}
+# resource "azurerm_role_assignment" "avd_automation" {
+#   scope                = azurerm_resource_group.avd.id
+#   role_definition_name = "Contributor"
+#   principal_id         = azurerm_automation_account.avd.identity[0].principal_id
+# }
