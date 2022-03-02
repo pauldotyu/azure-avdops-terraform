@@ -15,7 +15,7 @@ env:
   AZURE_RESOURCE_GROUP_LOCATION: "southcentralus"
   AZURE_MANAGED_IDENTITY_NAME: "msi-avdopslonghorn"
   AZURE_SHARED_IMAGE_GALLERY_NAME: "acgavdopslonghorn"
-  AZURE_SHARED_IMAGE_DEFINITION_NAME: "windows11-m365-20220"
+  AZURE_SHARED_IMAGE_DEFINITION_NAME: "windows11-m365-202202"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
